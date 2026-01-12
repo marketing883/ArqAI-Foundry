@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArqAI Foundry - Settings</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="sidebar-logo-icon">🔷</div>
+          <span>ArqAI Foundry</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="index.html" class="nav-item">
+            <span class="nav-item-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="templates.html" class="nav-item">
+            <span class="nav-item-icon">📋</span>
+            <span>Templates</span>
+          </a>
+          <a href="builder.html" class="nav-item">
+            <span class="nav-item-icon">🛠️</span>
+            <span>Build Agent</span>
+          </a>
+          <a href="agents.html" class="nav-item">
+            <span class="nav-item-icon">🤖</span>
+            <span>My Agents</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Configuration</div>
+          <a href="settings.html" class="nav-item active">
+            <span class="nav-item-icon">⚙️</span>
+            <span>Settings</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar">U</div>
+          <div class="user-details">
+            <div class="user-name">User</div>
+            <div class="user-role">Enterprise</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="page-header">
+        <h1 class="page-title">Settings</h1>
+        <p class="page-subtitle">Configure integrations and LLM providers</p>
+      </header>
+
+      <div class="page-content">
+        <!-- Alert Container -->
+        <div id="alert-container"></div>
+
+        <!-- LLM Providers Section -->
+        <div class="settings-section">
+          <h3 class="settings-section-title">🧠 LLM Providers</h3>
+          <p class="text-muted mb-3">Connect AI models to power your agents. ArqAI Foundry is LLM-agnostic - use any provider or bring your own.</p>
+
+          <div id="llm-providers" class="integration-grid">
+            <!-- OpenAI -->
+            <div class="integration-card">
+              <div class="integration-icon">🟢</div>
+              <div class="integration-info">
+                <div class="integration-name">OpenAI</div>
+                <div class="integration-status">GPT-4, GPT-4o, GPT-3.5</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="configureLLM('openai')">Configure</button>
+            </div>
+
+            <!-- Anthropic -->
+            <div class="integration-card">
+              <div class="integration-icon">🟤</div>
+              <div class="integration-info">
+                <div class="integration-name">Anthropic</div>
+                <div class="integration-status">Claude 3 Opus, Sonnet, Haiku</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="configureLLM('anthropic')">Configure</button>
+            </div>
+
+            <!-- Google -->
+            <div class="integration-card">
+              <div class="integration-icon">🔵</div>
+              <div class="integration-info">
+                <div class="integration-name">Google AI</div>
+                <div class="integration-status">Gemini Pro, Gemini Flash</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="configureLLM('google')">Configure</button>
+            </div>
+
+            <!-- Azure OpenAI -->
+            <div class="integration-card">
+              <div class="integration-icon">🔷</div>
+              <div class="integration-info">
+                <div class="integration-name">Azure OpenAI</div>
+                <div class="integration-status">Enterprise GPT deployments</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="configureLLM('azure_openai')">Configure</button>
+            </div>
+
+            <!-- AWS Bedrock -->
+            <div class="integration-card">
+              <div class="integration-icon">🟠</div>
+              <div class="integration-info">
+                <div class="integration-name">AWS Bedrock</div>
+                <div class="integration-status">Claude, Titan, Llama, Mistral</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="configureLLM('bedrock')">Configure</button>
+            </div>
+
+            <!-- Cohere -->
+            <div class="integration-card">
+              <div class="integration-icon">🟣</div>
+              <div class="integration-info">
+                <div class="integration-name">Cohere</div>
+                <div class="integration-status">Command R, Command R+</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="configureLLM('cohere')">Configure</button>
+            </div>
+
+            <!-- Mistral -->
+            <div class="integration-card">
+              <div class="integration-icon">⚪</div>
+              <div class="integration-info">
+                <div class="integration-name">Mistral AI</div>
+                <div class="integration-status">Mistral Large, Medium, Small</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="configureLLM('mistral')">Configure</button>
+            </div>
+
+            <!-- Custom / BYOL -->
+            <div class="integration-card" style="border: 1px dashed var(--border-color);">
+              <div class="integration-icon">➕</div>
+              <div class="integration-info">
+                <div class="integration-name">Custom / BYOL</div>
+                <div class="integration-status">Bring Your Own LLM</div>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="configureLLM('custom')">Add Custom</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Integrations Section -->
+        <div class="settings-section">
+          <h3 class="settings-section-title">🔌 Integrations</h3>
+          <p class="text-muted mb-3">Connect external services that your agents will interact with.</p>
+
+          <div class="integration-grid">
+            <!-- AWS -->
+            <div class="integration-card">
+              <div class="integration-icon">☁️</div>
+              <div class="integration-info">
+                <div class="integration-name">AWS</div>
+                <div class="integration-status">EC2, RDS, S3, Cost Explorer</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="configureIntegration('aws')">Configure</button>
+            </div>
+
+            <!-- Jira -->
+            <div class="integration-card">
+              <div class="integration-icon">📋</div>
+              <div class="integration-info">
+                <div class="integration-name">Jira</div>
+                <div class="integration-status">Issue tracking & workflows</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="configureIntegration('jira')">Configure</button>
+            </div>
+
+            <!-- Slack -->
+            <div class="integration-card">
+              <div class="integration-icon">💬</div>
+              <div class="integration-info">
+                <div class="integration-name">Slack</div>
+                <div class="integration-status">Notifications & approvals</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="configureIntegration('slack')">Configure</button>
+            </div>
+
+            <!-- MS Teams -->
+            <div class="integration-card">
+              <div class="integration-icon">👥</div>
+              <div class="integration-info">
+                <div class="integration-name">Microsoft Teams</div>
+                <div class="integration-status">Notifications & approvals</div>
+              </div>
+              <button class="btn btn-secondary btn-sm" onclick="configureIntegration('teams')">Configure</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Organization Section -->
+        <div class="settings-section">
+          <h3 class="settings-section-title">🏢 Organization</h3>
+
+          <div class="card" style="max-width: 600px;">
+            <div class="form-group">
+              <label class="form-label">Tenant ID</label>
+              <input type="text" id="tenant-id" class="form-input" value="demo-tenant">
+              <p class="form-hint">Your organization's unique identifier</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">User ID</label>
+              <input type="text" id="user-id" class="form-input" value="demo-user">
+              <p class="form-hint">Your user identifier</p>
+            </div>
+
+            <button class="btn btn-primary" onclick="saveOrgSettings()">Save Settings</button>
+          </div>
+        </div>
+
+        <!-- API Info Section -->
+        <div class="settings-section">
+          <h3 class="settings-section-title">🔗 API Information</h3>
+
+          <div class="card" style="max-width: 600px;">
+            <div class="form-group">
+              <label class="form-label">API Base URL</label>
+              <input type="text" class="form-input" value="http://localhost:8000/api/v1" readonly style="background: var(--bg-primary);">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">API Status</label>
+              <div id="api-status" style="display: flex; align-items: center; gap: 8px;">
+                <span class="loading-spinner"></span>
+                <span>Checking...</span>
+              </div>
+            </div>
+
+            <a href="http://localhost:8000/api/docs" target="_blank" class="btn btn-secondary">
+              📖 View API Documentation
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Configuration Modal -->
+  <div id="config-modal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">Configure</h2>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <!-- Dynamic form content -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" id="modal-save-btn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay" style="display: none;">
+    <div class="loading-content">
+      <div class="loading-spinner loading-spinner-lg"></div>
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Load saved settings
+      document.getElementById('tenant-id').value = localStorage.getItem('tenantId') || 'demo-tenant';
+      document.getElementById('user-id').value = localStorage.getItem('userId') || 'demo-user';
+
+      // Check API status
+      await checkApiStatus();
+    });
+
+    async function checkApiStatus() {
+      const statusEl = document.getElementById('api-status');
+      try {
+        const health = await api.getHealth();
+        if (health.status === 'healthy') {
+          statusEl.innerHTML = '<span style="color: var(--accent-success);">✓</span> <span>Connected</span>';
+        } else {
+          statusEl.innerHTML = '<span style="color: var(--accent-warning);">⚠</span> <span>Unhealthy</span>';
+        }
+      } catch (error) {
+        statusEl.innerHTML = '<span style="color: var(--accent-danger);">✗</span> <span>Disconnected - Make sure the API is running on localhost:8000</span>';
+      }
+    }
+
+    function saveOrgSettings() {
+      const tenantId = document.getElementById('tenant-id').value;
+      const userId = document.getElementById('user-id').value;
+
+      localStorage.setItem('tenantId', tenantId);
+      localStorage.setItem('userId', userId);
+
+      // Update API client
+      api.tenantId = tenantId;
+      api.userId = userId;
+
+      showAlert('Settings saved!', 'success');
+    }
+
+    function configureLLM(provider) {
+      const configs = {
+        openai: {
+          title: 'Configure OpenAI',
+          fields: [
+            { name: 'api_key', label: 'API Key', type: 'password', placeholder: 'sk-...' },
+            { name: 'organization', label: 'Organization ID (optional)', type: 'text', placeholder: 'org-...' },
+            { name: 'model', label: 'Default Model', type: 'select', options: ['gpt-4', 'gpt-4-turbo', 'gpt-4o', 'gpt-3.5-turbo'] },
+          ],
+        },
+        anthropic: {
+          title: 'Configure Anthropic',
+          fields: [
+            { name: 'api_key', label: 'API Key', type: 'password', placeholder: 'sk-ant-...' },
+            { name: 'model', label: 'Default Model', type: 'select', options: ['claude-3-opus-20240229', 'claude-3-sonnet-20240229', 'claude-3-haiku-20240307'] },
+          ],
+        },
+        google: {
+          title: 'Configure Google AI',
+          fields: [
+            { name: 'api_key', label: 'API Key', type: 'password', placeholder: 'AIza...' },
+            { name: 'model', label: 'Default Model', type: 'select', options: ['gemini-1.5-pro', 'gemini-1.5-flash', 'gemini-pro'] },
+          ],
+        },
+        azure_openai: {
+          title: 'Configure Azure OpenAI',
+          fields: [
+            { name: 'api_key', label: 'API Key', type: 'password' },
+            { name: 'endpoint', label: 'Endpoint URL', type: 'text', placeholder: 'https://your-resource.openai.azure.com/' },
+            { name: 'deployment', label: 'Deployment Name', type: 'text' },
+          ],
+        },
+        bedrock: {
+          title: 'Configure AWS Bedrock',
+          fields: [
+            { name: 'access_key_id', label: 'AWS Access Key ID', type: 'password' },
+            { name: 'secret_access_key', label: 'AWS Secret Access Key', type: 'password' },
+            { name: 'region', label: 'Region', type: 'select', options: ['us-east-1', 'us-west-2', 'eu-west-1'] },
+          ],
+        },
+        cohere: {
+          title: 'Configure Cohere',
+          fields: [
+            { name: 'api_key', label: 'API Key', type: 'password' },
+            { name: 'model', label: 'Default Model', type: 'select', options: ['command-r', 'command-r-plus'] },
+          ],
+        },
+        mistral: {
+          title: 'Configure Mistral AI',
+          fields: [
+            { name: 'api_key', label: 'API Key', type: 'password' },
+            { name: 'model', label: 'Default Model', type: 'select', options: ['mistral-large-latest', 'mistral-medium-latest', 'mistral-small-latest'] },
+          ],
+        },
+        custom: {
+          title: 'Configure Custom LLM (BYOL)',
+          fields: [
+            { name: 'name', label: 'Provider Name', type: 'text', placeholder: 'my-custom-llm' },
+            { name: 'api_base', label: 'API Base URL', type: 'text', placeholder: 'http://localhost:8080/v1' },
+            { name: 'api_key', label: 'API Key (if required)', type: 'password' },
+            { name: 'model', label: 'Model Name', type: 'text' },
+            { name: 'openai_compatible', label: 'OpenAI Compatible', type: 'checkbox' },
+          ],
+        },
+      };
+
+      const config = configs[provider];
+      if (!config) return;
+
+      showConfigModal(config.title, config.fields, async (data) => {
+        try {
+          await api.registerLLM(provider, config.title, data);
+          showAlert(`${config.title} configured successfully!`, 'success');
+        } catch (error) {
+          showAlert('Failed to configure: ' + error.message, 'danger');
+        }
+      });
+    }
+
+    function configureIntegration(type) {
+      const configs = {
+        aws: {
+          title: 'Configure AWS',
+          fields: [
+            { name: 'role_arn', label: 'IAM Role ARN', type: 'text', placeholder: 'arn:aws:iam::123456789:role/...' },
+            { name: 'regions', label: 'Regions (comma-separated)', type: 'text', placeholder: 'us-east-1, us-west-2' },
+            { name: 'external_id', label: 'External ID (optional)', type: 'text' },
+          ],
+        },
+        jira: {
+          title: 'Configure Jira',
+          fields: [
+            { name: 'base_url', label: 'Jira Base URL', type: 'text', placeholder: 'https://your-domain.atlassian.net' },
+            { name: 'username', label: 'Email', type: 'text' },
+            { name: 'api_token', label: 'API Token', type: 'password' },
+            { name: 'project_key', label: 'Default Project Key', type: 'text', placeholder: 'PROJ' },
+          ],
+        },
+        slack: {
+          title: 'Configure Slack',
+          fields: [
+            { name: 'bot_token', label: 'Bot Token', type: 'password', placeholder: 'xoxb-...' },
+            { name: 'signing_secret', label: 'Signing Secret', type: 'password' },
+            { name: 'default_channel', label: 'Default Channel', type: 'text', placeholder: '#arqai-notifications' },
+          ],
+        },
+        teams: {
+          title: 'Configure Microsoft Teams',
+          fields: [
+            { name: 'tenant_id', label: 'Tenant ID', type: 'text' },
+            { name: 'client_id', label: 'Client ID', type: 'text' },
+            { name: 'client_secret', label: 'Client Secret', type: 'password' },
+            { name: 'webhook_url', label: 'Webhook URL (optional)', type: 'text' },
+          ],
+        },
+      };
+
+      const config = configs[type];
+      if (!config) return;
+
+      showConfigModal(config.title, config.fields, async (data) => {
+        try {
+          // Would save integration config
+          showAlert(`${config.title} configured successfully!`, 'success');
+        } catch (error) {
+          showAlert('Failed to configure: ' + error.message, 'danger');
+        }
+      });
+    }
+
+    function showConfigModal(title, fields, onSave) {
+      document.getElementById('modal-title').textContent = title;
+
+      const body = document.getElementById('modal-body');
+      body.innerHTML = fields.map(field => {
+        if (field.type === 'select') {
+          return `
+            <div class="form-group">
+              <label class="form-label">${field.label}</label>
+              <select class="form-select" data-field="${field.name}">
+                ${field.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+              </select>
+            </div>
+          `;
+        }
+        if (field.type === 'checkbox') {
+          return `
+            <div class="form-group">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                <input type="checkbox" data-field="${field.name}">
+                <span>${field.label}</span>
+              </label>
+            </div>
+          `;
+        }
+        return `
+          <div class="form-group">
+            <label class="form-label">${field.label}</label>
+            <input type="${field.type}" class="form-input" data-field="${field.name}" placeholder="${field.placeholder || ''}">
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('modal-save-btn').onclick = () => {
+        const data = {};
+        body.querySelectorAll('[data-field]').forEach(input => {
+          const field = input.dataset.field;
+          if (input.type === 'checkbox') {
+            data[field] = input.checked;
+          } else {
+            data[field] = input.value;
+          }
+        });
+        closeModal();
+        onSave(data);
+      };
+
+      document.getElementById('config-modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('config-modal').classList.remove('active');
+    }
+
+    // Close modal on outside click
+    document.getElementById('config-modal').addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>

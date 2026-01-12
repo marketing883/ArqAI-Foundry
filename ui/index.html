@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArqAI Foundry - Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="sidebar-logo-icon">🔷</div>
+          <span>ArqAI Foundry</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="index.html" class="nav-item active">
+            <span class="nav-item-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="templates.html" class="nav-item">
+            <span class="nav-item-icon">📋</span>
+            <span>Templates</span>
+          </a>
+          <a href="builder.html" class="nav-item">
+            <span class="nav-item-icon">🛠️</span>
+            <span>Build Agent</span>
+          </a>
+          <a href="agents.html" class="nav-item">
+            <span class="nav-item-icon">🤖</span>
+            <span>My Agents</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Configuration</div>
+          <a href="settings.html" class="nav-item">
+            <span class="nav-item-icon">⚙️</span>
+            <span>Settings</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar">U</div>
+          <div class="user-details">
+            <div class="user-name">User</div>
+            <div class="user-role">Enterprise</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="page-header">
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-subtitle">Welcome to ArqAI Foundry - Build trusted AI agents for your enterprise</p>
+      </header>
+
+      <div class="page-content">
+        <!-- Alert Container -->
+        <div id="alert-container"></div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <div class="stat-card-icon primary">📋</div>
+            </div>
+            <div class="stat-value" id="stat-templates">16</div>
+            <div class="stat-label">Available Templates</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <div class="stat-card-icon success">🤖</div>
+            </div>
+            <div class="stat-value" id="stat-agents">0</div>
+            <div class="stat-label">Active Agents</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <div class="stat-card-icon warning">🏢</div>
+            </div>
+            <div class="stat-value">4</div>
+            <div class="stat-label">Industry Verticals</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <div class="stat-card-icon info">🔌</div>
+            </div>
+            <div class="stat-value" id="stat-integrations">4</div>
+            <div class="stat-label">Integrations Available</div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h3 class="card-title">Quick Actions</h3>
+          </div>
+          <div class="d-flex gap-2" style="flex-wrap: wrap;">
+            <a href="builder.html" class="btn btn-primary btn-lg">
+              🛠️ Create New Agent
+            </a>
+            <a href="templates.html" class="btn btn-secondary btn-lg">
+              📋 Browse Templates
+            </a>
+            <a href="settings.html" class="btn btn-secondary btn-lg">
+              ⚙️ Configure Integrations
+            </a>
+          </div>
+        </div>
+
+        <!-- Industry Verticals -->
+        <h3 class="mb-2">Industry Templates</h3>
+        <div class="template-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
+          <a href="templates.html?vertical=finance" class="card" style="text-decoration: none; color: inherit;">
+            <div class="d-flex align-center gap-2">
+              <div class="template-icon finance" style="width: 56px; height: 56px; font-size: 1.75rem;">💰</div>
+              <div>
+                <h4 style="font-weight: 600; margin-bottom: 4px;">Finance</h4>
+                <p class="text-muted" style="font-size: 0.875rem;">4 templates</p>
+              </div>
+            </div>
+            <p class="text-muted mt-2" style="font-size: 0.85rem;">
+              Cost optimization, trading compliance, risk assessment, fraud detection
+            </p>
+          </a>
+
+          <a href="templates.html?vertical=healthcare" class="card" style="text-decoration: none; color: inherit;">
+            <div class="d-flex align-center gap-2">
+              <div class="template-icon healthcare" style="width: 56px; height: 56px; font-size: 1.75rem;">🏥</div>
+              <div>
+                <h4 style="font-weight: 600; margin-bottom: 4px;">Healthcare</h4>
+                <p class="text-muted" style="font-size: 0.875rem;">4 templates</p>
+              </div>
+            </div>
+            <p class="text-muted mt-2" style="font-size: 0.85rem;">
+              PHI access control, clinical workflows, HIPAA compliance, resource optimization
+            </p>
+          </a>
+
+          <a href="templates.html?vertical=energy" class="card" style="text-decoration: none; color: inherit;">
+            <div class="d-flex align-center gap-2">
+              <div class="template-icon energy" style="width: 56px; height: 56px; font-size: 1.75rem;">⚡</div>
+              <div>
+                <h4 style="font-weight: 600; margin-bottom: 4px;">Energy</h4>
+                <p class="text-muted" style="font-size: 0.875rem;">4 templates</p>
+              </div>
+            </div>
+            <p class="text-muted mt-2" style="font-size: 0.85rem;">
+              Grid operations, asset maintenance, NERC CIP compliance, energy trading
+            </p>
+          </a>
+
+          <a href="templates.html?vertical=government" class="card" style="text-decoration: none; color: inherit;">
+            <div class="d-flex align-center gap-2">
+              <div class="template-icon government" style="width: 56px; height: 56px; font-size: 1.75rem;">🏛️</div>
+              <div>
+                <h4 style="font-weight: 600; margin-bottom: 4px;">Government</h4>
+                <p class="text-muted" style="font-size: 0.875rem;">4 templates</p>
+              </div>
+            </div>
+            <p class="text-muted mt-2" style="font-size: 0.85rem;">
+              FedRAMP compliance, citizen data protection, procurement, security operations
+            </p>
+          </a>
+        </div>
+
+        <!-- Platform Features -->
+        <h3 class="mt-4 mb-2">Platform Features</h3>
+        <div class="stats-grid">
+          <div class="card">
+            <h4 style="font-weight: 600; margin-bottom: 8px;">🔒 Trust-Aware Orchestration</h4>
+            <p class="text-muted" style="font-size: 0.875rem;">
+              Risk scoring, capability tokens, and multi-level approvals for every action
+            </p>
+          </div>
+          <div class="card">
+            <h4 style="font-weight: 600; margin-bottom: 8px;">📜 Compliance-Aware Compiler</h4>
+            <p class="text-muted" style="font-size: 0.875rem;">
+              100% deterministic execution with fail-closed semantics and audit trails
+            </p>
+          </div>
+          <div class="card">
+            <h4 style="font-weight: 600; margin-bottom: 8px;">🧠 LLM Agnostic</h4>
+            <p class="text-muted" style="font-size: 0.875rem;">
+              OpenAI, Anthropic, Google, Azure, Bedrock, Cohere, Mistral + BYOL support
+            </p>
+          </div>
+          <div class="card">
+            <h4 style="font-weight: 600; margin-bottom: 8px;">🔗 Multi-Agent Coordination</h4>
+            <p class="text-muted" style="font-size: 0.875rem;">
+              Agents communicate via message bus with workflow orchestration patterns
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay" style="display: none;">
+    <div class="loading-content">
+      <div class="loading-spinner loading-spinner-lg"></div>
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    // Check API health on load
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const health = await api.getHealth();
+        if (health.status === 'healthy') {
+          showAlert('Connected to ArqAI Foundry API', 'success');
+        }
+
+        // Load template count
+        const templates = await api.getTemplates();
+        document.getElementById('stat-templates').textContent = templates.total || 16;
+
+      } catch (error) {
+        showAlert('Could not connect to API. Make sure the server is running on localhost:8000', 'danger');
+      }
+    });
+  </script>
+</body>
+</html>

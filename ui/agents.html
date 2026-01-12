@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArqAI Foundry - My Agents</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="sidebar-logo-icon">🔷</div>
+          <span>ArqAI Foundry</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="index.html" class="nav-item">
+            <span class="nav-item-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="templates.html" class="nav-item">
+            <span class="nav-item-icon">📋</span>
+            <span>Templates</span>
+          </a>
+          <a href="builder.html" class="nav-item">
+            <span class="nav-item-icon">🛠️</span>
+            <span>Build Agent</span>
+          </a>
+          <a href="agents.html" class="nav-item active">
+            <span class="nav-item-icon">🤖</span>
+            <span>My Agents</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Configuration</div>
+          <a href="settings.html" class="nav-item">
+            <span class="nav-item-icon">⚙️</span>
+            <span>Settings</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar">U</div>
+          <div class="user-details">
+            <div class="user-name">User</div>
+            <div class="user-role">Enterprise</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="page-header">
+        <div class="d-flex justify-between align-center">
+          <div>
+            <h1 class="page-title">My Agents</h1>
+            <p class="page-subtitle">Manage your deployed AI agents</p>
+          </div>
+          <a href="builder.html" class="btn btn-primary">
+            + Create Agent
+          </a>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <!-- Alert Container -->
+        <div id="alert-container"></div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-status="all">All</button>
+          <button class="filter-tab" data-status="active">🟢 Active</button>
+          <button class="filter-tab" data-status="paused">🟡 Paused</button>
+          <button class="filter-tab" data-status="stopped">🔴 Stopped</button>
+        </div>
+
+        <!-- Agents Grid -->
+        <div id="agents-grid" class="agent-grid">
+          <!-- Agents loaded here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state">
+          <div class="empty-state-icon">🤖</div>
+          <h3 class="empty-state-title">No agents yet</h3>
+          <p class="empty-state-description">Create your first AI agent to get started</p>
+          <a href="builder.html" class="btn btn-primary btn-lg">
+            🛠️ Create Your First Agent
+          </a>
+        </div>
+
+        <!-- Demo Agents (shown when API has no agents) -->
+        <div id="demo-agents" class="hidden">
+          <div class="alert alert-info mb-3">
+            <span>ℹ️</span>
+            <span>These are demo agents for preview. Create real agents using the builder.</span>
+          </div>
+          <div class="agent-grid">
+            <!-- Demo Agent 1 -->
+            <div class="agent-card">
+              <div class="agent-card-header">
+                <div class="agent-info">
+                  <div class="agent-icon">💰</div>
+                  <div>
+                    <div class="agent-name">Cost Optimizer - Prod</div>
+                    <div class="agent-template">Financial Services Cost Optimizer</div>
+                  </div>
+                </div>
+                <div class="agent-status active">
+                  <span class="status-dot"></span>
+                  Active
+                </div>
+              </div>
+              <div class="agent-stats">
+                <div class="agent-stat">
+                  <div class="agent-stat-value">1,247</div>
+                  <div class="agent-stat-label">Actions</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value">$45.2K</div>
+                  <div class="agent-stat-label">Saved</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value">99.9%</div>
+                  <div class="agent-stat-label">Uptime</div>
+                </div>
+              </div>
+              <div class="agent-actions">
+                <button class="btn btn-secondary btn-sm">⏸️ Pause</button>
+                <button class="btn btn-secondary btn-sm">📊 Logs</button>
+                <button class="btn btn-secondary btn-sm">⚙️ Edit</button>
+              </div>
+            </div>
+
+            <!-- Demo Agent 2 -->
+            <div class="agent-card">
+              <div class="agent-card-header">
+                <div class="agent-info">
+                  <div class="agent-icon" style="background-color: rgba(59, 130, 246, 0.15);">🏥</div>
+                  <div>
+                    <div class="agent-name">PHI Access Monitor</div>
+                    <div class="agent-template">PHI Access Controller</div>
+                  </div>
+                </div>
+                <div class="agent-status active">
+                  <span class="status-dot"></span>
+                  Active
+                </div>
+              </div>
+              <div class="agent-stats">
+                <div class="agent-stat">
+                  <div class="agent-stat-value">8,432</div>
+                  <div class="agent-stat-label">Reviews</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value">23</div>
+                  <div class="agent-stat-label">Blocked</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value">100%</div>
+                  <div class="agent-stat-label">Compliant</div>
+                </div>
+              </div>
+              <div class="agent-actions">
+                <button class="btn btn-secondary btn-sm">⏸️ Pause</button>
+                <button class="btn btn-secondary btn-sm">📊 Logs</button>
+                <button class="btn btn-secondary btn-sm">⚙️ Edit</button>
+              </div>
+            </div>
+
+            <!-- Demo Agent 3 -->
+            <div class="agent-card">
+              <div class="agent-card-header">
+                <div class="agent-info">
+                  <div class="agent-icon" style="background-color: rgba(139, 92, 246, 0.15);">🏛️</div>
+                  <div>
+                    <div class="agent-name">FedRAMP Scanner</div>
+                    <div class="agent-template">FedRAMP Compliance Manager</div>
+                  </div>
+                </div>
+                <div class="agent-status paused">
+                  <span class="status-dot"></span>
+                  Paused
+                </div>
+              </div>
+              <div class="agent-stats">
+                <div class="agent-stat">
+                  <div class="agent-stat-value">325</div>
+                  <div class="agent-stat-label">Controls</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value">12</div>
+                  <div class="agent-stat-label">POA&Ms</div>
+                </div>
+                <div class="agent-stat">
+                  <div class="agent-stat-value">94%</div>
+                  <div class="agent-stat-label">Score</div>
+                </div>
+              </div>
+              <div class="agent-actions">
+                <button class="btn btn-success btn-sm">▶️ Resume</button>
+                <button class="btn btn-secondary btn-sm">📊 Logs</button>
+                <button class="btn btn-secondary btn-sm">⚙️ Edit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay" style="display: none;">
+    <div class="loading-content">
+      <div class="loading-spinner loading-spinner-lg"></div>
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    let agents = [];
+    let currentFilter = 'all';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadAgents();
+      setupEventListeners();
+    });
+
+    async function loadAgents() {
+      showLoading(true);
+      try {
+        const response = await api.getAgents();
+        agents = response.agents || [];
+        renderAgents();
+      } catch (error) {
+        // Show demo agents if API fails or returns empty
+        showDemoAgents();
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    function renderAgents() {
+      const grid = document.getElementById('agents-grid');
+      const emptyState = document.getElementById('empty-state');
+      const demoAgents = document.getElementById('demo-agents');
+
+      // Filter
+      let filtered = agents;
+      if (currentFilter !== 'all') {
+        filtered = filtered.filter(a => a.status === currentFilter);
+      }
+
+      if (filtered.length === 0 && agents.length === 0) {
+        grid.classList.add('hidden');
+        demoAgents.classList.remove('hidden');
+        emptyState.classList.add('hidden');
+        return;
+      }
+
+      if (filtered.length === 0) {
+        grid.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        demoAgents.classList.add('hidden');
+        return;
+      }
+
+      grid.classList.remove('hidden');
+      emptyState.classList.add('hidden');
+      demoAgents.classList.add('hidden');
+
+      grid.innerHTML = filtered.map(agent => `
+        <div class="agent-card">
+          <div class="agent-card-header">
+            <div class="agent-info">
+              <div class="agent-icon">🤖</div>
+              <div>
+                <div class="agent-name">${agent.name}</div>
+                <div class="agent-template">${agent.template_id}</div>
+              </div>
+            </div>
+            <div class="agent-status ${agent.status}">
+              <span class="status-dot"></span>
+              ${agent.status}
+            </div>
+          </div>
+          <div class="agent-stats">
+            <div class="agent-stat">
+              <div class="agent-stat-value">${agent.metrics?.actions || 0}</div>
+              <div class="agent-stat-label">Actions</div>
+            </div>
+            <div class="agent-stat">
+              <div class="agent-stat-value">${agent.metrics?.success_rate || 100}%</div>
+              <div class="agent-stat-label">Success</div>
+            </div>
+            <div class="agent-stat">
+              <div class="agent-stat-value">${agent.metrics?.uptime || 100}%</div>
+              <div class="agent-stat-label">Uptime</div>
+            </div>
+          </div>
+          <div class="agent-actions">
+            ${agent.status === 'active' ? `
+              <button class="btn btn-secondary btn-sm" onclick="pauseAgent('${agent.agent_id}')">⏸️ Pause</button>
+            ` : `
+              <button class="btn btn-success btn-sm" onclick="startAgent('${agent.agent_id}')">▶️ Start</button>
+            `}
+            <button class="btn btn-secondary btn-sm">📊 Logs</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteAgent('${agent.agent_id}')">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function showDemoAgents() {
+      document.getElementById('agents-grid').classList.add('hidden');
+      document.getElementById('empty-state').classList.add('hidden');
+      document.getElementById('demo-agents').classList.remove('hidden');
+    }
+
+    function setupEventListeners() {
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentFilter = tab.dataset.status;
+          renderAgents();
+        });
+      });
+    }
+
+    async function pauseAgent(agentId) {
+      try {
+        await api.updateAgentStatus(agentId, 'paused');
+        showAlert('Agent paused', 'success');
+        await loadAgents();
+      } catch (error) {
+        showAlert('Failed to pause agent: ' + error.message, 'danger');
+      }
+    }
+
+    async function startAgent(agentId) {
+      try {
+        await api.updateAgentStatus(agentId, 'active');
+        showAlert('Agent started', 'success');
+        await loadAgents();
+      } catch (error) {
+        showAlert('Failed to start agent: ' + error.message, 'danger');
+      }
+    }
+
+    async function deleteAgent(agentId) {
+      if (!confirm('Are you sure you want to delete this agent?')) return;
+
+      try {
+        await api.deleteAgent(agentId);
+        showAlert('Agent deleted', 'success');
+        await loadAgents();
+      } catch (error) {
+        showAlert('Failed to delete agent: ' + error.message, 'danger');
+      }
+    }
+  </script>
+</body>
+</html>

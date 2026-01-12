@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArqAI Foundry - Templates</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="sidebar-logo-icon">🔷</div>
+          <span>ArqAI Foundry</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="index.html" class="nav-item">
+            <span class="nav-item-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="templates.html" class="nav-item active">
+            <span class="nav-item-icon">📋</span>
+            <span>Templates</span>
+          </a>
+          <a href="builder.html" class="nav-item">
+            <span class="nav-item-icon">🛠️</span>
+            <span>Build Agent</span>
+          </a>
+          <a href="agents.html" class="nav-item">
+            <span class="nav-item-icon">🤖</span>
+            <span>My Agents</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Configuration</div>
+          <a href="settings.html" class="nav-item">
+            <span class="nav-item-icon">⚙️</span>
+            <span>Settings</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar">U</div>
+          <div class="user-details">
+            <div class="user-name">User</div>
+            <div class="user-role">Enterprise</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="page-header">
+        <h1 class="page-title">Template Gallery</h1>
+        <p class="page-subtitle">Choose from 16 pre-built templates across 4 regulated industries</p>
+      </header>
+
+      <div class="page-content">
+        <!-- Alert Container -->
+        <div id="alert-container"></div>
+
+        <!-- Search -->
+        <div class="search-container">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" class="search-input" placeholder="Search templates...">
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-vertical="all">All</button>
+          <button class="filter-tab" data-vertical="finance">💰 Finance</button>
+          <button class="filter-tab" data-vertical="healthcare">🏥 Healthcare</button>
+          <button class="filter-tab" data-vertical="energy">⚡ Energy</button>
+          <button class="filter-tab" data-vertical="government">🏛️ Government</button>
+        </div>
+
+        <!-- Templates Grid -->
+        <div id="templates-grid" class="template-grid">
+          <!-- Templates loaded via JavaScript -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state hidden">
+          <div class="empty-state-icon">📋</div>
+          <h3 class="empty-state-title">No templates found</h3>
+          <p class="empty-state-description">Try adjusting your search or filter criteria</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Template Detail Modal -->
+  <div id="template-modal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-template-name">Template Name</h2>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modal-template-content">
+          <!-- Content loaded dynamically -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+        <button class="btn btn-primary" id="modal-use-btn">Use This Template</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay" style="display: none;">
+    <div class="loading-content">
+      <div class="loading-spinner loading-spinner-lg"></div>
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    let allTemplates = [];
+    let currentFilter = 'all';
+    let selectedTemplate = null;
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Check URL params for vertical filter
+      const urlParams = new URLSearchParams(window.location.search);
+      const verticalParam = urlParams.get('vertical');
+      if (verticalParam) {
+        currentFilter = verticalParam;
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+          tab.classList.toggle('active', tab.dataset.vertical === currentFilter);
+        });
+      }
+
+      await loadTemplates();
+      setupEventListeners();
+    });
+
+    async function loadTemplates() {
+      showLoading(true);
+      try {
+        const response = await api.getTemplates();
+        allTemplates = response.templates || [];
+        renderTemplates();
+      } catch (error) {
+        showAlert('Failed to load templates: ' + error.message, 'danger');
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    function renderTemplates() {
+      const grid = document.getElementById('templates-grid');
+      const emptyState = document.getElementById('empty-state');
+      const searchTerm = document.getElementById('search-input').value.toLowerCase();
+
+      // Filter templates
+      let filtered = allTemplates;
+
+      if (currentFilter !== 'all') {
+        filtered = filtered.filter(t => t.vertical === currentFilter);
+      }
+
+      if (searchTerm) {
+        filtered = filtered.filter(t =>
+          t.name.toLowerCase().includes(searchTerm) ||
+          t.description.toLowerCase().includes(searchTerm) ||
+          t.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+        );
+      }
+
+      // Show/hide empty state
+      emptyState.classList.toggle('hidden', filtered.length > 0);
+      grid.classList.toggle('hidden', filtered.length === 0);
+
+      // Render cards
+      grid.innerHTML = filtered.map(template => `
+        <div class="template-card" onclick="showTemplateDetail('${template.template_id}')">
+          <div class="template-card-header">
+            <div class="template-icon ${template.vertical}">
+              ${getVerticalIcon(template.vertical)}
+            </div>
+            <div class="template-info">
+              <div class="template-name">${template.name}</div>
+              <span class="template-vertical ${template.vertical}">${template.vertical}</span>
+            </div>
+          </div>
+          <p class="template-description">${template.description}</p>
+          <div class="template-meta">
+            <span class="template-meta-item">
+              ⚡ ${template.capabilities.length} capabilities
+            </span>
+            <span class="template-meta-item">
+              🔧 ${template.parameters.length} parameters
+            </span>
+          </div>
+          <div class="template-actions">
+            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); useTemplate('${template.template_id}')">
+              Use Template
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation(); showTemplateDetail('${template.template_id}')">
+              View Details
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function setupEventListeners() {
+      // Filter tabs
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentFilter = tab.dataset.vertical;
+          renderTemplates();
+        });
+      });
+
+      // Search input
+      document.getElementById('search-input').addEventListener('input', () => {
+        renderTemplates();
+      });
+
+      // Modal close on outside click
+      document.getElementById('template-modal').addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-overlay')) {
+          closeModal();
+        }
+      });
+    }
+
+    function showTemplateDetail(templateId) {
+      const template = allTemplates.find(t => t.template_id === templateId);
+      if (!template) return;
+
+      selectedTemplate = template;
+
+      document.getElementById('modal-template-name').textContent = template.name;
+      document.getElementById('modal-use-btn').onclick = () => useTemplate(templateId);
+
+      const content = document.getElementById('modal-template-content');
+      content.innerHTML = `
+        <div class="mb-3">
+          <span class="template-vertical ${template.vertical}">${template.vertical}</span>
+          <span class="badge badge-${getRiskBadge(template)}" style="margin-left: 8px;">${template.category}</span>
+        </div>
+
+        <p class="mb-3">${template.description}</p>
+
+        <h4 style="font-weight: 600; margin-bottom: 12px;">Capabilities (${template.capabilities.length})</h4>
+        <div style="margin-bottom: 24px;">
+          ${template.capabilities.map(cap => `
+            <div style="padding: 12px; background: var(--bg-tertiary); border-radius: 8px; margin-bottom: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <strong>${cap.name}</strong>
+                <span class="badge badge-${cap.risk_tier}">${cap.risk_tier}</span>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">${cap.description}</p>
+              ${!cap.enabled_by_default ? '<span style="font-size: 0.75rem; color: var(--accent-warning);">⚠️ Disabled by default</span>' : ''}
+            </div>
+          `).join('')}
+        </div>
+
+        <h4 style="font-weight: 600; margin-bottom: 12px;">Configurable Parameters (${template.parameters.length})</h4>
+        <div style="margin-bottom: 24px;">
+          ${template.parameters.map(param => `
+            <div style="padding: 12px; background: var(--bg-tertiary); border-radius: 8px; margin-bottom: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <strong>${param.name}</strong>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">${param.type}</span>
+              </div>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 4px 0;">${param.description}</p>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Default: <code style="background: var(--bg-primary); padding: 2px 6px; border-radius: 4px;">${JSON.stringify(param.default)}</code></p>
+            </div>
+          `).join('')}
+        </div>
+
+        <h4 style="font-weight: 600; margin-bottom: 12px;">Required Integrations</h4>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          ${template.integrations.map(int => `
+            <span style="padding: 6px 12px; background: var(--bg-tertiary); border-radius: 6px; font-size: 0.85rem;">
+              ${getIntegrationIcon(int.type)} ${int.type}
+              ${int.required ? '' : '<span style="color: var(--text-muted);">(optional)</span>'}
+            </span>
+          `).join('')}
+        </div>
+
+        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            ${template.tags.map(tag => `
+              <span style="padding: 4px 10px; background: var(--bg-tertiary); border-radius: 12px; font-size: 0.75rem; color: var(--text-muted);">#${tag}</span>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('template-modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('template-modal').classList.remove('active');
+      selectedTemplate = null;
+    }
+
+    function useTemplate(templateId) {
+      // Store selected template and redirect to builder
+      localStorage.setItem('selectedTemplate', templateId);
+      window.location.href = 'builder.html';
+    }
+
+    function getRiskBadge(template) {
+      const hasHighRisk = template.capabilities.some(c => c.risk_tier === 'high' || c.risk_tier === 'critical');
+      if (hasHighRisk) return 'high';
+      const hasMediumRisk = template.capabilities.some(c => c.risk_tier === 'medium');
+      if (hasMediumRisk) return 'medium';
+      return 'low';
+    }
+
+    function getIntegrationIcon(type) {
+      const icons = {
+        aws: '☁️',
+        aws_govcloud: '☁️',
+        jira: '📋',
+        slack: '💬',
+        teams: '👥',
+        ehr_system: '🏥',
+        trading_system: '📈',
+        scada: '⚡',
+        siem: '🔒',
+      };
+      return icons[type] || '🔌';
+    }
+  </script>
+</body>
+</html>

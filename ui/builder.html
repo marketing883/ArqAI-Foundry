@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArqAI Foundry - Build Agent</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="sidebar-logo-icon">🔷</div>
+          <span>ArqAI Foundry</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a href="index.html" class="nav-item">
+            <span class="nav-item-icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="templates.html" class="nav-item">
+            <span class="nav-item-icon">📋</span>
+            <span>Templates</span>
+          </a>
+          <a href="builder.html" class="nav-item active">
+            <span class="nav-item-icon">🛠️</span>
+            <span>Build Agent</span>
+          </a>
+          <a href="agents.html" class="nav-item">
+            <span class="nav-item-icon">🤖</span>
+            <span>My Agents</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Configuration</div>
+          <a href="settings.html" class="nav-item">
+            <span class="nav-item-icon">⚙️</span>
+            <span>Settings</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar">U</div>
+          <div class="user-details">
+            <div class="user-name">User</div>
+            <div class="user-role">Enterprise</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="page-header">
+        <h1 class="page-title">Build Agent</h1>
+        <p class="page-subtitle">Create a new AI agent from a template in 5 easy steps</p>
+      </header>
+
+      <div class="page-content">
+        <!-- Alert Container -->
+        <div id="alert-container"></div>
+
+        <div class="wizard-container">
+          <!-- Wizard Steps -->
+          <div class="wizard-steps">
+            <div class="wizard-step active" data-step="1">
+              <div class="wizard-step-number">1</div>
+              <span class="wizard-step-label">Template</span>
+            </div>
+            <div class="wizard-step" data-step="2">
+              <div class="wizard-step-number">2</div>
+              <span class="wizard-step-label">Name</span>
+            </div>
+            <div class="wizard-step" data-step="3">
+              <div class="wizard-step-number">3</div>
+              <span class="wizard-step-label">Configure</span>
+            </div>
+            <div class="wizard-step" data-step="4">
+              <div class="wizard-step-number">4</div>
+              <span class="wizard-step-label">Integrations</span>
+            </div>
+            <div class="wizard-step" data-step="5">
+              <div class="wizard-step-number">5</div>
+              <span class="wizard-step-label">Deploy</span>
+            </div>
+          </div>
+
+          <!-- Step 1: Select Template -->
+          <div id="step-1" class="wizard-content">
+            <h3 style="margin-bottom: 16px;">Select a Template</h3>
+            <p class="text-muted mb-3">Choose a pre-built template as the foundation for your agent</p>
+
+            <div class="filter-tabs mb-3">
+              <button class="filter-tab active" data-vertical="all">All</button>
+              <button class="filter-tab" data-vertical="finance">💰 Finance</button>
+              <button class="filter-tab" data-vertical="healthcare">🏥 Healthcare</button>
+              <button class="filter-tab" data-vertical="energy">⚡ Energy</button>
+              <button class="filter-tab" data-vertical="government">🏛️ Government</button>
+            </div>
+
+            <div id="template-select-grid" style="display: grid; gap: 12px; max-height: 400px; overflow-y: auto;">
+              <!-- Templates loaded here -->
+            </div>
+          </div>
+
+          <!-- Step 2: Name Agent -->
+          <div id="step-2" class="wizard-content hidden">
+            <h3 style="margin-bottom: 16px;">Name Your Agent</h3>
+            <p class="text-muted mb-3">Give your agent a descriptive name</p>
+
+            <div id="selected-template-info" class="mb-3" style="padding: 16px; background: var(--bg-tertiary); border-radius: 8px;">
+              <!-- Selected template info -->
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Agent Name *</label>
+              <input type="text" id="agent-name" class="form-input" placeholder="e.g., Production Cost Optimizer">
+              <p class="form-hint">Choose a name that describes what this agent does</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Description (optional)</label>
+              <textarea id="agent-description" class="form-textarea" placeholder="Describe what this agent will do..."></textarea>
+            </div>
+          </div>
+
+          <!-- Step 3: Configure Parameters -->
+          <div id="step-3" class="wizard-content hidden">
+            <h3 style="margin-bottom: 16px;">Configure Parameters</h3>
+            <p class="text-muted mb-3">Customize the agent's behavior (these are the 30% you control)</p>
+
+            <div id="parameters-form">
+              <!-- Parameters form generated here -->
+            </div>
+
+            <div class="mt-3">
+              <h4 style="margin-bottom: 12px;">Capabilities</h4>
+              <p class="text-muted mb-2" style="font-size: 0.85rem;">Enable or disable specific capabilities</p>
+              <div id="capabilities-form">
+                <!-- Capabilities toggles -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Configure Integrations -->
+          <div id="step-4" class="wizard-content hidden">
+            <h3 style="margin-bottom: 16px;">Connect Integrations</h3>
+            <p class="text-muted mb-3">Configure the external services your agent will use</p>
+
+            <div id="integrations-form">
+              <!-- Integrations form -->
+            </div>
+          </div>
+
+          <!-- Step 5: Review & Deploy -->
+          <div id="step-5" class="wizard-content hidden">
+            <h3 style="margin-bottom: 16px;">Review & Deploy</h3>
+            <p class="text-muted mb-3">Review your configuration and deploy the agent</p>
+
+            <div id="review-summary" style="background: var(--bg-tertiary); border-radius: 8px; padding: 20px;">
+              <!-- Summary -->
+            </div>
+
+            <div class="alert alert-info mt-3">
+              <span>ℹ️</span>
+              <span>Your agent will be deployed in <strong>production</strong> mode. All actions will be logged and may require approvals based on risk level.</span>
+            </div>
+          </div>
+
+          <!-- Wizard Actions -->
+          <div class="wizard-actions">
+            <button id="btn-back" class="btn btn-secondary" onclick="previousStep()" disabled>
+              ← Back
+            </button>
+            <div>
+              <button id="btn-cancel" class="btn btn-secondary" onclick="cancelBuilder()">
+                Cancel
+              </button>
+              <button id="btn-next" class="btn btn-primary" onclick="nextStep()">
+                Next →
+              </button>
+              <button id="btn-deploy" class="btn btn-success hidden" onclick="deployAgent()">
+                🚀 Deploy Agent
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay" style="display: none;">
+    <div class="loading-content">
+      <div class="loading-spinner loading-spinner-lg"></div>
+      <p id="loading-text">Loading...</p>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    let currentStep = 1;
+    let allTemplates = [];
+    let selectedTemplate = null;
+    let sessionId = null;
+    let agentConfig = {
+      name: '',
+      description: '',
+      parameters: {},
+      capabilities: { enabled: [], disabled: [] },
+      integrations: {},
+    };
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadTemplates();
+      setupEventListeners();
+
+      // Check if template was pre-selected
+      const preSelectedTemplate = localStorage.getItem('selectedTemplate');
+      if (preSelectedTemplate) {
+        localStorage.removeItem('selectedTemplate');
+        selectTemplate(preSelectedTemplate);
+      }
+    });
+
+    async function loadTemplates() {
+      showLoading(true);
+      try {
+        const response = await api.getTemplates();
+        allTemplates = response.templates || [];
+        renderTemplateSelect();
+      } catch (error) {
+        showAlert('Failed to load templates', 'danger');
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    function renderTemplateSelect(filter = 'all') {
+      const grid = document.getElementById('template-select-grid');
+      let templates = allTemplates;
+
+      if (filter !== 'all') {
+        templates = templates.filter(t => t.vertical === filter);
+      }
+
+      grid.innerHTML = templates.map(t => `
+        <div class="template-select-item ${selectedTemplate?.template_id === t.template_id ? 'selected' : ''}"
+             onclick="selectTemplate('${t.template_id}')"
+             style="padding: 16px; border: 2px solid ${selectedTemplate?.template_id === t.template_id ? 'var(--accent-primary)' : 'var(--border-color)'}; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="template-icon ${t.vertical}" style="width: 40px; height: 40px; font-size: 1.25rem;">
+              ${getVerticalIcon(t.vertical)}
+            </div>
+            <div style="flex: 1;">
+              <div style="font-weight: 600;">${t.name}</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">${t.vertical} · ${t.capabilities.length} capabilities</div>
+            </div>
+            ${selectedTemplate?.template_id === t.template_id ? '<span style="color: var(--accent-primary);">✓</span>' : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function setupEventListeners() {
+      // Filter tabs for template selection
+      document.querySelectorAll('#step-1 .filter-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('#step-1 .filter-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          renderTemplateSelect(tab.dataset.vertical);
+        });
+      });
+    }
+
+    function selectTemplate(templateId) {
+      selectedTemplate = allTemplates.find(t => t.template_id === templateId);
+      renderTemplateSelect(document.querySelector('#step-1 .filter-tab.active')?.dataset.vertical || 'all');
+    }
+
+    async function nextStep() {
+      // Validate current step
+      if (!validateStep(currentStep)) return;
+
+      // Process step-specific actions
+      if (currentStep === 1 && !sessionId) {
+        await createSession();
+      }
+
+      if (currentStep === 2) {
+        agentConfig.name = document.getElementById('agent-name').value;
+        agentConfig.description = document.getElementById('agent-description').value;
+      }
+
+      if (currentStep === 3) {
+        collectParameters();
+        collectCapabilities();
+      }
+
+      if (currentStep === 4) {
+        collectIntegrations();
+        renderReviewSummary();
+      }
+
+      // Move to next step
+      currentStep++;
+      updateWizardUI();
+    }
+
+    function previousStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        updateWizardUI();
+      }
+    }
+
+    function updateWizardUI() {
+      // Update step indicators
+      document.querySelectorAll('.wizard-step').forEach((step, index) => {
+        const stepNum = index + 1;
+        step.classList.remove('active', 'completed');
+        if (stepNum === currentStep) {
+          step.classList.add('active');
+        } else if (stepNum < currentStep) {
+          step.classList.add('completed');
+        }
+      });
+
+      // Show/hide content
+      for (let i = 1; i <= 5; i++) {
+        document.getElementById(`step-${i}`).classList.toggle('hidden', i !== currentStep);
+      }
+
+      // Update buttons
+      document.getElementById('btn-back').disabled = currentStep === 1;
+      document.getElementById('btn-next').classList.toggle('hidden', currentStep === 5);
+      document.getElementById('btn-deploy').classList.toggle('hidden', currentStep !== 5);
+
+      // Step-specific UI updates
+      if (currentStep === 2) {
+        renderSelectedTemplateInfo();
+      }
+      if (currentStep === 3) {
+        renderParametersForm();
+        renderCapabilitiesForm();
+      }
+      if (currentStep === 4) {
+        renderIntegrationsForm();
+      }
+    }
+
+    function validateStep(step) {
+      if (step === 1 && !selectedTemplate) {
+        showAlert('Please select a template', 'warning');
+        return false;
+      }
+      if (step === 2 && !document.getElementById('agent-name').value.trim()) {
+        showAlert('Please enter an agent name', 'warning');
+        return false;
+      }
+      return true;
+    }
+
+    async function createSession() {
+      showLoading(true, 'Creating session...');
+      try {
+        const response = await api.createSession();
+        sessionId = response.session_id;
+
+        // Select template
+        await api.selectTemplate(sessionId, selectedTemplate.template_id);
+      } catch (error) {
+        showAlert('Failed to create session: ' + error.message, 'danger');
+        throw error;
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    function renderSelectedTemplateInfo() {
+      const container = document.getElementById('selected-template-info');
+      container.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="template-icon ${selectedTemplate.vertical}" style="width: 48px; height: 48px; font-size: 1.5rem;">
+            ${getVerticalIcon(selectedTemplate.vertical)}
+          </div>
+          <div>
+            <div style="font-weight: 600; font-size: 1.1rem;">${selectedTemplate.name}</div>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">${selectedTemplate.description.substring(0, 100)}...</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderParametersForm() {
+      const form = document.getElementById('parameters-form');
+      form.innerHTML = selectedTemplate.parameters.map(param => `
+        <div class="form-group">
+          <label class="form-label">${param.name.replace(/_/g, ' ')}</label>
+          ${renderParameterInput(param)}
+          <p class="form-hint">${param.description}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderParameterInput(param) {
+      const value = agentConfig.parameters[param.name] ?? param.default;
+
+      if (param.type === 'number') {
+        return `<input type="number" class="form-input" data-param="${param.name}" value="${value}">`;
+      }
+      if (param.type === 'boolean') {
+        return `
+          <select class="form-select" data-param="${param.name}">
+            <option value="true" ${value ? 'selected' : ''}>Yes</option>
+            <option value="false" ${!value ? 'selected' : ''}>No</option>
+          </select>
+        `;
+      }
+      if (param.type === 'list') {
+        return `<input type="text" class="form-input" data-param="${param.name}" value="${Array.isArray(value) ? value.join(', ') : value}" placeholder="Comma-separated values">`;
+      }
+      if (param.type === 'object') {
+        return `<textarea class="form-textarea" data-param="${param.name}" style="font-family: monospace; font-size: 0.85rem;">${JSON.stringify(value, null, 2)}</textarea>`;
+      }
+      return `<input type="text" class="form-input" data-param="${param.name}" value="${value}">`;
+    }
+
+    function renderCapabilitiesForm() {
+      const form = document.getElementById('capabilities-form');
+      form.innerHTML = selectedTemplate.capabilities.map(cap => `
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--bg-tertiary); border-radius: 8px; margin-bottom: 8px;">
+          <div style="flex: 1;">
+            <div style="font-weight: 500;">${cap.name.replace(/_/g, ' ')}</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">${cap.description}</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span class="badge badge-${cap.risk_tier}">${cap.risk_tier}</span>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" data-capability="${cap.name}" ${cap.enabled_by_default ? 'checked' : ''}>
+              <span style="font-size: 0.85rem;">Enabled</span>
+            </label>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderIntegrationsForm() {
+      const form = document.getElementById('integrations-form');
+      form.innerHTML = selectedTemplate.integrations.map(int => `
+        <div style="padding: 16px; background: var(--bg-tertiary); border-radius: 8px; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 1.5rem;">${getIntegrationIcon(int.type)}</span>
+              <div>
+                <div style="font-weight: 600;">${int.type.replace(/_/g, ' ').toUpperCase()}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">${int.required ? 'Required' : 'Optional'}</div>
+              </div>
+            </div>
+          </div>
+          ${renderIntegrationFields(int)}
+        </div>
+      `).join('');
+    }
+
+    function renderIntegrationFields(integration) {
+      // Simple configuration fields based on type
+      const fields = {
+        aws: ['role_arn', 'regions'],
+        slack: ['channel'],
+        teams: ['webhook_url'],
+        jira: ['project_key', 'base_url'],
+      };
+
+      const typeFields = fields[integration.type] || ['api_key'];
+
+      return typeFields.map(field => `
+        <div class="form-group" style="margin-bottom: 8px;">
+          <label class="form-label" style="font-size: 0.85rem;">${field.replace(/_/g, ' ')}</label>
+          <input type="text" class="form-input" data-integration="${integration.type}" data-field="${field}" placeholder="Enter ${field.replace(/_/g, ' ')}">
+        </div>
+      `).join('');
+    }
+
+    function collectParameters() {
+      document.querySelectorAll('[data-param]').forEach(input => {
+        const param = input.dataset.param;
+        let value = input.value;
+
+        // Type conversion
+        const paramDef = selectedTemplate.parameters.find(p => p.name === param);
+        if (paramDef) {
+          if (paramDef.type === 'number') {
+            value = parseFloat(value);
+          } else if (paramDef.type === 'boolean') {
+            value = value === 'true';
+          } else if (paramDef.type === 'list') {
+            value = value.split(',').map(v => v.trim()).filter(v => v);
+          } else if (paramDef.type === 'object') {
+            try {
+              value = JSON.parse(value);
+            } catch (e) {
+              // Keep as string if invalid JSON
+            }
+          }
+        }
+
+        agentConfig.parameters[param] = value;
+      });
+    }
+
+    function collectCapabilities() {
+      agentConfig.capabilities.enabled = [];
+      agentConfig.capabilities.disabled = [];
+
+      document.querySelectorAll('[data-capability]').forEach(checkbox => {
+        const cap = checkbox.dataset.capability;
+        if (checkbox.checked) {
+          agentConfig.capabilities.enabled.push(cap);
+        } else {
+          agentConfig.capabilities.disabled.push(cap);
+        }
+      });
+    }
+
+    function collectIntegrations() {
+      agentConfig.integrations = {};
+
+      document.querySelectorAll('[data-integration]').forEach(input => {
+        const intType = input.dataset.integration;
+        const field = input.dataset.field;
+        const value = input.value;
+
+        if (!agentConfig.integrations[intType]) {
+          agentConfig.integrations[intType] = {};
+        }
+        if (value) {
+          agentConfig.integrations[intType][field] = value;
+        }
+      });
+    }
+
+    function renderReviewSummary() {
+      const summary = document.getElementById('review-summary');
+      summary.innerHTML = `
+        <div style="margin-bottom: 20px;">
+          <h4 style="margin-bottom: 8px;">Template</h4>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="template-icon ${selectedTemplate.vertical}" style="width: 40px; height: 40px;">
+              ${getVerticalIcon(selectedTemplate.vertical)}
+            </div>
+            <div>
+              <div style="font-weight: 600;">${selectedTemplate.name}</div>
+              <span class="template-vertical ${selectedTemplate.vertical}">${selectedTemplate.vertical}</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <h4 style="margin-bottom: 8px;">Agent Details</h4>
+          <p><strong>Name:</strong> ${agentConfig.name}</p>
+          ${agentConfig.description ? `<p><strong>Description:</strong> ${agentConfig.description}</p>` : ''}
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <h4 style="margin-bottom: 8px;">Capabilities</h4>
+          <p><strong>Enabled:</strong> ${agentConfig.capabilities.enabled.length}</p>
+          <p><strong>Disabled:</strong> ${agentConfig.capabilities.disabled.length}</p>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <h4 style="margin-bottom: 8px;">Configured Parameters</h4>
+          <pre style="background: var(--bg-primary); padding: 12px; border-radius: 6px; font-size: 0.8rem; overflow-x: auto;">${JSON.stringify(agentConfig.parameters, null, 2)}</pre>
+        </div>
+
+        <div>
+          <h4 style="margin-bottom: 8px;">Integrations</h4>
+          <p>${Object.keys(agentConfig.integrations).filter(k => Object.keys(agentConfig.integrations[k]).length > 0).join(', ') || 'None configured'}</p>
+        </div>
+      `;
+    }
+
+    async function deployAgent() {
+      showLoading(true, 'Deploying agent...');
+      try {
+        // Update session with all configuration
+        await api.updateAgentName(sessionId, agentConfig.name, agentConfig.description);
+        await api.updateParameters(sessionId, agentConfig.parameters);
+        await api.updateCapabilities(sessionId, agentConfig.capabilities.enabled, agentConfig.capabilities.disabled);
+        await api.updateIntegrations(sessionId, agentConfig.integrations);
+
+        // Validate
+        const validation = await api.validateSession(sessionId);
+        if (!validation.valid) {
+          showAlert('Validation failed: ' + validation.errors.join(', '), 'danger');
+          return;
+        }
+
+        // Deploy
+        const result = await api.deployAgent(sessionId, agentConfig.name, 'production');
+
+        showAlert('Agent deployed successfully!', 'success');
+
+        // Redirect to agents page after short delay
+        setTimeout(() => {
+          window.location.href = 'agents.html';
+        }, 2000);
+
+      } catch (error) {
+        showAlert('Deployment failed: ' + error.message, 'danger');
+      } finally {
+        showLoading(false);
+      }
+    }
+
+    function cancelBuilder() {
+      if (confirm('Are you sure you want to cancel? All progress will be lost.')) {
+        sessionId = null;
+        selectedTemplate = null;
+        agentConfig = { name: '', description: '', parameters: {}, capabilities: { enabled: [], disabled: [] }, integrations: {} };
+        currentStep = 1;
+        updateWizardUI();
+        renderTemplateSelect();
+      }
+    }
+
+    function showLoading(show, text = 'Loading...') {
+      const overlay = document.getElementById('loading-overlay');
+      const textEl = document.getElementById('loading-text');
+      if (overlay) overlay.style.display = show ? 'flex' : 'none';
+      if (textEl) textEl.textContent = text;
+    }
+
+    function getIntegrationIcon(type) {
+      const icons = { aws: '☁️', slack: '💬', teams: '👥', jira: '📋' };
+      return icons[type] || '🔌';
+    }
+  </script>
+</body>
+</html>
